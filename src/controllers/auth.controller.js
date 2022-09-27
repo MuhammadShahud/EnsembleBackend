@@ -13,17 +13,12 @@ const config = require("../config/config");
 const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 
-const login = catchAsync(async (req, res, next) => {
-  const { orderId, token } = req.body;
-  console.log(req.body)
-  const user = await authService.loginUserWithEmailAndPassword(orderId, token);
-  const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens });
-});
-
 const signup = (req, res, next) => {
   let { name, email, password, password_confirmation } = req.body;
+  console.log(email);
   let errors = [];
+  email = email.toLowerCase();
+  console.log(email);
   if (!name) {
     errors.push({ name: "required" });
   }
@@ -83,6 +78,7 @@ const signup = (req, res, next) => {
 }
 const signin = (req, res) => {
      let { email, password } = req.body;
+     email = email.toLowerCase();
      console.log("detailll",req.body,email,password)
      let errors = [];
      if (!email) {
@@ -157,7 +153,6 @@ decoded) => {
 }
 
 module.exports = {
-  login,
   signin,
   signup
 };
