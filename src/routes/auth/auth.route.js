@@ -14,7 +14,7 @@ router.post('/forgetPass', authController.forgetPassword);
 router.route('/:id')
 .patch(userController.updateUserById);
 
-router.route('/changePass').post(authValidation.validateToken,authController.changePassword)
+router.route('/changePass').post(authController.changePassword)
 
 module.exports = router;
 
