@@ -17,24 +17,24 @@ const signup = async (req, res, next) => {
   email = email.toLowerCase();
   console.log(email);
   if (!name) {
-    errors.push({ name: "required" });
+    errors.push({ message: " Name Required" });
   }
   if (!email) {
-    errors.push({ email: "required" });
+    errors.push({ message: "Email Required" });
   }
   if (!emailRegexp.test(email)) {
-    errors.push({ email: "invalid" });
+    errors.push({ message: "Email Invalid" });
   }
   if (!password) {
-    errors.push({ password: "required" });
+    errors.push({ message: "Password Required" });
   }
   if (!password_confirmation) {
     errors.push({
-      password_confirmation: "required",
+      message: "confirm password required",
     });
   }
   if (password != password_confirmation) {
-    errors.push({ password: "mismatch" });
+    errors.push({ message: "Password Mismatch" });
   }
   if (errors.length > 0) {
     return res.status(422).json({ errors: errors });
@@ -44,7 +44,7 @@ const signup = async (req, res, next) => {
       if (user) {
         return res
           .status(422)
-          .json({ errors: [{ user: "email already exists" }] });
+          .json({ errors: [{ message: "email already exists" }] });
       } else {
         const user = new User({
           name: name,
@@ -80,7 +80,7 @@ const signup = async (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        errors: [{ error: "Something went wrong" }],
+        errors: [{ message: "Something went wrong" }],
       });
     });
 };
@@ -91,17 +91,17 @@ const signin = (req, res) => {
   let errors = [];
   if (!email) {
     console.log("S1");
-    errors.push({ email: "required" });
+    errors.push({ message: "email required" });
   }
   if (!emailRegexp.test(email)) {
     console.log("S2");
 
-    errors.push({ email: "invalid email" });
+    errors.push({ message: "invalid email" });
   }
   if (!password) {
     console.log("S3");
 
-    errors.push({ passowrd: "required" });
+    errors.push({ message: "password required" });
   }
   if (errors.length > 0) {
     console.log("S4");
@@ -114,7 +114,7 @@ const signin = (req, res) => {
         console.log("S5");
 
         return res.status(404).json({
-          errors: [{ user: "not found" }],
+          errors: [{ message: "User not found" }],
         });
       } else {
         console.log("S6");
@@ -126,7 +126,7 @@ const signin = (req, res) => {
             if (!isMatch) {
               return res
                 .status(400)
-                .json({ errors: [{ password: "incorrect" }] });
+                .json({ errors: [{ message: "password incorrect" }] });
             }
             let access_token = createJWT(user.email);
 console.log(access_token);
