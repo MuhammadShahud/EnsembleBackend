@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
+const { update } = require('../models/user.model');
 const ApiError = require('../utils/APIError');
+const fs = require('fs');
+const path = require('path');
 /**
  * Create a user
  * @param {Object} userBody
@@ -18,7 +21,20 @@ const createUser = async userBody => {
   }
 };
 
-
+const postPic = async (userId, file) => {
+  console.log("working",file.path);
+  const user = await getUserById(userId);
+  const newUser = {
+    profilePic: file.path
+  
+  }
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  Object.assign(user, newUser);
+  await user.save();
+  return user;
+};
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -29,7 +45,7 @@ const createUser = async userBody => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (filter, options) => {
-  const users = await User.paginate(filter, options, 'customer_id');
+  const users = await User.paginate(filter, options);
   return users;
 };
 
@@ -82,18 +98,7 @@ const updateUserById = async (userId, updateBody) => {
   return user;
 };
 
-const updateUserByCustomerId = async (customer_id, updateBody) => {
-  const user = await getUserByCustomerId(customer_id);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
-  // if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
-  //   throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  // }
-  Object.assign(user, updateBody);
-  await user.save();
-  return user;
-};
+
 
 /**
  * Delete user by id
@@ -121,13 +126,13 @@ const deleteUserByCustomerId = async customer_id => {
 
 module.exports = {
   createUser,
+  postPic,
   queryUsers,
   getAllUsers,
   getUserById,
   getUserByEmail,
   getUserByCustomerId,
   updateUserById,
-  updateUserByCustomerId,
   deleteUserById,
   deleteUserByCustomerId,
 };

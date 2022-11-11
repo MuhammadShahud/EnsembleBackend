@@ -2,25 +2,21 @@
 const mongoose = require("mongoose");
 const { toJSON, paginate } = require("./plugins");
 
-const stepSchema = mongoose.Schema(
-      {
-            step:{
-                  type:String,
-                  required: true,
-            },
-            num:{
-                  type: Number,
-                  required: true,
-            },
-            isDone: {
-                  type: Boolean,
-                  required: false,
-                  default: false,
-                }
-
-      }
-)
-
+const stepSchema = mongoose.Schema({
+  step: {
+    type: String,
+    required: true,
+  },
+  num: {
+    type: Number,
+    required: true,
+  },
+  isDone: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
 
 const goalSchema = mongoose.Schema(
   {
@@ -37,7 +33,10 @@ const goalSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
-    steps: [stepSchema]
+    steps: {
+      type: [stepSchema],
+      required: false,
+    },
   },
   {
     timestamps: true,

@@ -11,8 +11,8 @@ const emailRegexp =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const signup = async (req, res, next) => {
-  let { name, email, password, password_confirmation } = req.body;
-  console.log(email);
+  let { name, email, password, password_confirmation, companyId } = req.body;
+  console.log('companyId',companyId,req.body);
   let errors = [];
   email = email.toLowerCase();
   console.log(email);
@@ -50,11 +50,13 @@ const signup = async (req, res, next) => {
           name: name,
           email: email,
           password: password,
+          companyId: companyId
         });
         await bcrypt
           .hash(password, 10)
           .then((pass) => {
             user.password = pass;
+            
             user
               .save()
               .then((response) => {

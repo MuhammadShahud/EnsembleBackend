@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const {userController} = require('../../controllers');
 const auth = require('../../middlewares/auth');
+const upload = require('../../middlewares/multer');
 const validate = require('../../middlewares/validate');
 const userValidation = require('../../validations/user.validation');
 
@@ -12,7 +13,7 @@ router.route('/').post(
   userController.createUser,
 );
 // .get(userController.getAllUser);
-
+router.route('/profilePic/:id').patch(upload.single('file'),userController.postPic)
 
 router.route('/:id')
   .get(userController.getUserById)

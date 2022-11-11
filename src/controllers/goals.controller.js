@@ -17,7 +17,7 @@ const getGoals = catchAsync(async (req, res) => {
   const result = await goalsService.getGoals(req);
   res
     .status(httpStatus.CREATED)
-    .send({ message: "Goal has been updated", result });
+    .send({ message: "Got all goals", result });
 });
 
 const updateGoal = catchAsync(async (req, res) => {

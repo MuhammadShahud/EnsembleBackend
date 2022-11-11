@@ -12,6 +12,7 @@ const {errorConverter, errorHandler} = require('./middlewares/error');
 const morgan = require('./config/morgan');
 const path = require('path');
 
+
 const app = express();
 
 if (config.env !== 'test') {
@@ -30,12 +31,9 @@ app.use(cors());
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.options('*', cors());
+app.use('/uploads', express.static('./uploads'));
 
 app.use('/api', routes);
-
-// app.get("/*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-// });
 
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
