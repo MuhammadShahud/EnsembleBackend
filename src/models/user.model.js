@@ -12,14 +12,6 @@ const Questions = mongoose.Schema(
       type: String,
       required: true,
     },
-    jobTitle: {
-      type: String,
-      required: true,
-    },
-    threeDesc: {
-      type: String,
-      required: true,
-    },
     descKid: {
       type: String,
       required: true,
@@ -56,10 +48,7 @@ const profileData = mongoose.Schema(
       type: String,
       required: true,
     },
-    dOB: {
-      type: Date,
-      required: true,
-    },
+   
   },
   {
     timestaps: true,
