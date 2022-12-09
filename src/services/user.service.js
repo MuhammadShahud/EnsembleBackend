@@ -22,7 +22,7 @@ const createUser = async userBody => {
 };
 
 const postPic = async (userId, file) => {
-  console.log("working",file.path);
+  console.log("working",file);
   const user = await getUserById(userId);
   const newUser = {
     profilePic: file.path
