@@ -92,7 +92,8 @@ const userSchema = mongoose.Schema(
     teamId:{
       type: String,
       required: false
-    }
+    },
+    completedSurveys : [String]
   },
   {
     timestaps: true,

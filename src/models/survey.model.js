@@ -9,7 +9,10 @@ const surveySchema = mongoose.Schema(
       type: String,
       required: true,
     },
+
     response: [Number],
+
+   
 
   },
   {
