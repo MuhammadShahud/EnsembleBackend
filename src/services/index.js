@@ -5,6 +5,8 @@ module.exports.goalsService = require('./goals.service');
 module.exports.companyService = require('./company.service');
 module.exports.teamService = require('./team.service');
 module.exports.surveyService = require('./survey.service');
+module.exports.notiService = require('./notification.service');
+
 
 
 

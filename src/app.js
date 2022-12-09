@@ -11,6 +11,14 @@ const ApiError = require('./utils/APIError');
 const {errorConverter, errorHandler} = require('./middlewares/error');
 const morgan = require('./config/morgan');
 const path = require('path');
+const admin = require("firebase-admin");
+
+
+const serviceAccount = require("../firebase.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 
 const app = express();

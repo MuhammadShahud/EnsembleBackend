@@ -1,0 +1,30 @@
+/* eslint-disable prettier/prettier */
+const mongoose = require("mongoose");
+const { toJSON, paginate } = require("./plugins");
+
+
+const notificationSchema = mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+    type : {
+      type: String,
+      required: true,
+    }
+
+  },
+  {
+    timestamps: true,
+  }
+);
+// add plugin that converts mongoose to json
+notificationSchema.plugin(toJSON);
+notificationSchema.plugin(paginate);
+const notifications = mongoose.model("notification", notificationSchema);
+module.exports = notifications;

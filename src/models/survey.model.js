@@ -19,5 +19,5 @@ const surveySchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 surveySchema.plugin(toJSON);
 surveySchema.plugin(paginate);
-const Company = mongoose.model("survey", surveySchema);
-module.exports = Company;
+const Survey = mongoose.model("survey", surveySchema);
+module.exports = Survey;
