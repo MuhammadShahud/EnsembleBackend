@@ -13,5 +13,6 @@ router.route('/token/:id')
 
 router.route("/")
 .post(notiController.createNoti)
+.get(notiController.getNoti)
 
 module.exports = router;

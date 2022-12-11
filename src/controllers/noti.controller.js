@@ -12,6 +12,14 @@ const createNoti = catchAsync(async (req, res) => {
         .send({ message: "Noti has been created", response });
     });
 
+    const getNoti = catchAsync(async (req, res) => {
+      console.log("req", req);
+      const result = await notiService.getNoti(req);
+      res
+        .status(httpStatus.CREATED)
+        .send({ message: "Got all Noti", result });
+    });
+
 const createToken = catchAsync(async (req, res) => {
   const response = await notiService.createToken(req.body);
   console.log("response --> ", response);
@@ -40,5 +48,6 @@ module.exports = {
       createToken,
       getTokens,
       updateToken,
-      createNoti
+      createNoti,
+      getNoti
 };

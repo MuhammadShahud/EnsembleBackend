@@ -7,7 +7,7 @@ var mongoose = require("mongoose");
 const admin = require("firebase-admin");
 
 const createNoti = async (req) => {
-  // const noti = await Notification.create(req);
+  const noti = await Notification.create(req);
   const res = await getTokenById("638e8e677bb5e473f75d062c");
   console.log("asjidjasiodjas",res.token);
 const tokens = res.token;
@@ -20,9 +20,17 @@ const tokens = res.token;
       title,
       body,
     },
+    data: {
+     type:req.navigate
+    }
   });
 
   return firebase;
+};
+
+const getNoti = async (req) => {
+  const products = Notification.find();
+  return products;
 };
 
 const createToken = async (body) => {
@@ -59,4 +67,5 @@ module.exports = {
   getTokenById,
   updateToken,
   createNoti,
+  getNoti
 };
