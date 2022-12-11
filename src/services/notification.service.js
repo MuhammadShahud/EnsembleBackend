@@ -14,16 +14,23 @@ const tokens = res.token;
   console.log("tokens", tokens);
   const { title, text } = req;
   const body = text;
- const firebase = await admin.messaging().sendMulticast({
+ const firebase = req.navigate? await admin.messaging().sendMulticast({
     tokens,
     notification: {
       title,
       body,
     },
-    data: {
-     type:req.navigate
-    }
-  });
+   data: {
+type:req.navigate
+ }
+  }): await admin.messaging().sendMulticast({
+    tokens,
+    notification: {
+      title,
+      body,
+    },
+ 
+  })
 
   return firebase;
 };
