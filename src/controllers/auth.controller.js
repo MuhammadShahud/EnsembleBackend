@@ -155,8 +155,7 @@ const forgetPassword = async (req, res) => {
   var code = forgetCode.toString();
   code = code.split("").join(" ");
   console.log("code", code);
-  const { email } = req.body;
-  email = email.toLowerCase();
+  const email  = req.body.email.toLowerCase();
   console.log(email);
   try {
     if (email) {
