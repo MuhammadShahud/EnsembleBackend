@@ -26,8 +26,24 @@ const updateCompanyById = async (userId, updateBody) => {
   await company.save();
   return company;
 };
+
+const postPic = async (userId, file) => {
+  console.log("working",file);
+  const user = await getCompanyById(userId);
+  const newUser = {
+    profilePic: file.path
+  
+  }
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  Object.assign(user, newUser);
+  await user.save();
+  return user;
+};
 module.exports = {
   createCompany,
   getCompanyById,
   updateCompanyById,
+  postPic
 };

@@ -2,32 +2,78 @@
 const mongoose = require("mongoose");
 const { toJSON, paginate } = require("./plugins");
 
-
 const companySchema = mongoose.Schema(
   {
     companyName: {
       type: String,
+      required: false,
+    },
+    brandColor: {
+      type: String,
+      required: false,
+    },
+    designation: {
+      type: String,
+      required: false,
+    },
+    name: {
+      type: String,
+      required: false,
+    },
+    sizeOfCompany: {
+      type: Number,
+      required: false,
+    },
+    organizationType: {
+      type: String,
+      required: false,
+    },
+    email: {
+      type: String,
       required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    forgetCode: {
+      type: Number,
+      required: false,
+    },
+    aboutCompany: {
+      type: String,
+      required: false,
+    },
+    forgetCode: {
+      type: Number,
+      required: false,
+    },
+    firstTime:{
+      type: Boolean,
+      default:false
+    },
+    profilePic: {
+      type: String,
+      required: false,
     },
     teamId: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'team',
+        ref: "team",
       },
     ],
     employeeId: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: "user",
       },
     ],
     surveyId: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'survey',
+        ref: "survey",
       },
     ],
-
   },
   {
     timestamps: true,

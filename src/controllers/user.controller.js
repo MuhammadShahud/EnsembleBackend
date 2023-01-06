@@ -7,6 +7,11 @@ const createUser = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(user);
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  const result = await userService.changePassword(req.body,req.params.id);
+  res.status(httpStatus.CREATED).send(result);
+});
+
 const postPic = catchAsync(async (req, res) => {
   console.log('req.file',req.file);
   const user = await userService.postPic(req.params.id,req.file);
@@ -44,4 +49,5 @@ module.exports = {
   postPic,
   getUserById,
   updateUserById,
+  changePassword
 };

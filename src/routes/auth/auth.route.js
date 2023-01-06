@@ -11,6 +11,14 @@ router.post('/signup', authController.signup);
 router.post('/signin', authController.signin);
 router.post('/forgetPass', authController.forgetPassword);
 
+router.post('/signinCompany', authController.signinCompany);
+router.post('/signupCompany', authController.signupCompany);
+router.post('/forgetPassCompany', authController.forgetPasswordCompany);
+router.post('/changePassCompany', authController.changePasswordCompany);
+
+
+
+
 router.route('/:id')
 .patch(userController.updateUserById);
 

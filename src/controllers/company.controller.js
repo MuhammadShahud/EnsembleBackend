@@ -7,6 +7,12 @@ const createCompany = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(company);
 });
 
+const postPic = catchAsync(async (req, res) => {
+  console.log('req.file',req.file);
+  const user = await companyService.postPic(req.params.id,req.file);
+  res.status(httpStatus.CREATED).send(user);
+});
+
 const getCompanyById = catchAsync(async (req, res) => {
   const company = await companyService.getCompanyById(req.params.id);
   res.status(httpStatus.CREATED).send(company);
@@ -24,4 +30,5 @@ module.exports = {
   createCompany,
   getCompanyById,
   updateCompanyById,
+  postPic
 };
