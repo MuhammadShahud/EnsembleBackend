@@ -698,6 +698,35 @@ const changePasswordCompany = async (req, res) => {
   }
 };
 
+const forgetCode = (req, res) => {
+  let { code,email  } = req.body;
+  email = email.toLowerCase();
+  console.log("detailll", req.body);
+
+  Company.findOne({ email: email })
+    .then((user) => {
+      console.log("checkingg",user,code!==user.forgetCode);
+      if (!user || code !== user.forgetCode) {
+        console.log("S5");
+
+        return res.status(404).json({
+          errors: [{ message: "Incorrect Code" }],
+        });
+      } else {
+        console.log("S6");
+
+        return res.status(200).json({
+          success: true,
+          message: "Correct Code",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ erros: err });
+      console.log("err4");
+    });
+};
+
 module.exports = {
   signin,
   signup,
@@ -707,4 +736,5 @@ module.exports = {
   signupCompany,
   forgetPasswordCompany,
   changePasswordCompany,
+  forgetCode
 };

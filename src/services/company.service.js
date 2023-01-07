@@ -41,6 +41,9 @@ const postPic = async (userId, file) => {
   await user.save();
   return user;
 };
+
+
+
 module.exports = {
   createCompany,
   getCompanyById,

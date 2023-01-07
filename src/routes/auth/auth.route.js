@@ -15,6 +15,8 @@ router.post('/signinCompany', authController.signinCompany);
 router.post('/signupCompany', authController.signupCompany);
 router.post('/forgetPassCompany', authController.forgetPasswordCompany);
 router.post('/changePassCompany', authController.changePasswordCompany);
+router.post('/forgetCode', authController.forgetCode);
+
 
 
 

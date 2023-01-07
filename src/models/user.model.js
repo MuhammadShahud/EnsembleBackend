@@ -93,6 +93,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false
     },
+    firstTime:{
+      type: Boolean,
+      default:true
+    },
     completedSurveys : [String]
   },
   {

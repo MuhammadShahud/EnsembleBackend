@@ -50,7 +50,7 @@ const companySchema = mongoose.Schema(
     },
     firstTime:{
       type: Boolean,
-      default:false
+      default:true
     },
     profilePic: {
       type: String,
