@@ -637,23 +637,23 @@ const forgetPasswordCompany = async (req, res) => {
           if (error) {
             console.log(" not workingg", error);
 
-            return res.status(400).json({ message: "Error" });
+            return res.status(400).json({ errors: [{ message: "Error" }] });
           }
         });
       } else {
-        return res.status(400).json({ message: "Invalid Email" });
+        return res.status(400).json({ errors: [{ message: "Invalid Email" }] });
       }
 
       isUser.forgetCode = forgetCode;
       const result = await companyService.updateCompanyById(isUser._id, isUser);
       return res.send(result);
     } else {
-      return res.status(400).json({ message: "email is required" });
+      return res.status(400).json({errors:[{message: "email is required"}]  });
     }
   } catch (error) {
     console.log(" not working");
 
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({errors:[{message: error.message}]  });
   }
 };
 
@@ -685,16 +685,16 @@ const changePasswordCompany = async (req, res) => {
         })
 
         .catch((err) => {
-          res.status(500).json({ erros: err });
+          res.status(500).json({ errors: err });
           console.log("err3");
         });
     } else {
       return res
         .status(400)
-        .json({ message: "password and confirm password does not match" });
+        .json({errors:[{message: "password and confirm password does not match"}]  });
     }
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({errors:[{message: error.message}]  });
   }
 };
 
@@ -722,7 +722,7 @@ const forgetCode = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).json({ erros: err });
+      res.status(500).json({ errors: err });
       console.log("err4");
     });
 };
