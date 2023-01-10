@@ -5,15 +5,10 @@ const upload = require("../../middlewares/multer");
 const authValidation = require("../../validations/auth.validation");
 
 
-router.route("/")
-.post(companyController.createCompany)
+router.route('/profilePic/:id').patch(upload.single('file'),companyController.postPic)
 
 router.route('/:id')
 .patch(companyController.updateCompanyById)
 .get(companyController.getCompanyById)
-
-router.route('/profilePic/:id').patch(upload.single('file'),companyController.postPic)
-
-
 
 module.exports = router;

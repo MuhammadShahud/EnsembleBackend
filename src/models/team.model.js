@@ -8,7 +8,18 @@ const teamSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-
+    companyId: {
+      type: String,
+      required: true,
+    },
+    teamLead:{
+      type:String,
+      required:true
+    },
+    teamColor:{
+      type:String,
+      required:true
+    },
     employeeId: [
       {
         type: mongoose.Schema.Types.ObjectId,

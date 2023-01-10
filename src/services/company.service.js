@@ -10,7 +10,8 @@ const createCompany = async (body) => {
 };
 
 const getCompanyById = async (id) => {
-  const company = await Company.findById(id).populate("employeeId");
+  console.log(mongoose.Types.ObjectId.isValid(id));
+  const company = await Company.findById(id).populate("employeeId").populate('teamId');
   if (!company) {
     throw new ApiError(httpStatus.NOT_FOUND, "company not found");
   }
@@ -18,6 +19,8 @@ const getCompanyById = async (id) => {
 };
 
 const updateCompanyById = async (userId, updateBody) => {
+  console.log(mongoose.Types.ObjectId.isValid(userId));
+
   const company = await getCompanyById(userId);
   if (!company) {
     throw new ApiError(httpStatus.NOT_FOUND, "company not found");

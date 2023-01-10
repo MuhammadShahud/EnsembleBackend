@@ -6,27 +6,27 @@ const Questions = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: false,
     },
     pronouns: {
       type: String,
-      required: true,
+      required: false,
     },
     descKid: {
       type: String,
-      required: true,
+      required: false,
     },
     achievment: {
       type: String,
-      required: true,
+      required: false,
     },
     rockstarSkills: {
       type: Array,
-      required: true,
+      required: false,
     },
     Hobbies: {
       type: Array,
-      required: true,
+      required: false,
     },
   },
   {
@@ -38,17 +38,16 @@ const profileData = mongoose.Schema(
   {
     number: {
       type: String,
-      required: true,
+      required: false,
     },
     location: {
       type: String,
-      required: true,
+      required: false,
     },
     publicBio: {
       type: String,
-      required: true,
+      required: false,
     },
-   
   },
   {
     timestaps: true,
@@ -85,19 +84,23 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    companyId:{
+    companyId: {
       type: String,
-      required: true
+      required: true,
     },
-    teamId:{
+    teamId: {
       type: String,
-      required: false
+      required: false,
     },
-    firstTime:{
+    firstTime: {
       type: Boolean,
-      default:true
+      default: true,
     },
-    completedSurveys : [String]
+    jobTitle: {
+      type: String,
+      required: true,
+    },
+    completedSurveys: [String],
   },
   {
     timestaps: true,
