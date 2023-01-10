@@ -92,12 +92,13 @@ const changePassword = async (req, res) => {
             console.log("isMatch2");
             bcrypt.genSalt(10, function (err, salt) {
               bcrypt.hash(newPassword, salt, function (err, hash) {
-                console.log("hash");
+                console.log("hash",isUser.password,hash);
                 if (err) throw err;
                 isUser.password = hash;
              
               });
             });
+
             const result = await updateUserById(
               isUser._id,
               isUser
