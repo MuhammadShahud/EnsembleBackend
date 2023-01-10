@@ -13,15 +13,24 @@ const createGoal = catchAsync(async (req, res) => {
 });
 
 const getGoals = catchAsync(async (req, res) => {
-  console.log("req", req);
-  const result = await goalsService.getGoals(req);
-  res
-    .status(httpStatus.CREATED)
-    .send({ message: "Got all goals", result });
+  const filters = pick(req.query, ['employeeId', 'companyId']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const result = await goalsService.getGoals(
+      filters,
+      options,
+  );
+  res.send(result);
 });
 
 const updateGoal = catchAsync(async (req, res) => {
   const result = await goalsService.updateGoal(req.params.id, req.body);
+  res
+    .status(httpStatus.CREATED)
+    .send({ message: "Goal has been updated", result });
+});
+
+const updateGoalStep = catchAsync(async (req, res) => {
+  const result = await goalsService.updateGoalStep(req.params.id, req.body);
   res
     .status(httpStatus.CREATED)
     .send({ message: "Goal has been updated", result });
@@ -38,4 +47,5 @@ module.exports = {
   getGoals,
   updateGoal,
   deleteGoal,
+  updateGoalStep
 };

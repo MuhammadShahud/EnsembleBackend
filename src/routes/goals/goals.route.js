@@ -12,5 +12,7 @@ router.route('/:id')
 .patch(authValidation.validateToken,goalsController.updateGoal)
 .delete(authValidation.validateToken,goalsController.deleteGoal)
 
+router.route('/steps/:id')
+.patch(authValidation.validateToken,goalsController.updateGoalStep)
 
 module.exports = router;

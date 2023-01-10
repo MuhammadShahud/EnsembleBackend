@@ -9,15 +9,15 @@ const createGoal = async (body) => {
   return goal;
 };
 
-const getGoals = async (req) => {
-  const products = Goal.find();
+const getGoals = async (filter, options) => {
+  const products = Goal.paginate(filter, options);
   return products;
 };
 
-const getGoalById = async(id) => {
-      const response = await Goal.findById(id);
-      return response;
-      }
+const getGoalById = async (id) => {
+  const response = await Goal.findById(id);
+  return response;
+};
 
 const updateGoal = async (id, update) => {
   console.log("idddddddddddd", id, "upddateeeeeee", update);
@@ -30,19 +30,35 @@ const updateGoal = async (id, update) => {
   return goal;
 };
 
-const deleteGoal = async (id) => {
-      const goal = await getGoalById(id);
-      if (!goal) {
-          return 'Cannot find Goal'
-      }
-      await goal.remove();
-      return goal;
+const updateGoalStep = async (id, update) => {
+  console.log("idddddddddddd", id, "upddateeeeeee", update);
+  const goal = await getGoalById(id);
+  if (!goal) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Goal not found.");
   }
+  let completed = 0
+  update.steps.forEach(e => {
+    e.isDone === true ? completed = completed +1 : null
+  });
+  update.progress = completed / update.steps.length * 100;
+  Object.assign(goal, update);
+  await goal.save();
+  return goal;
+};
 
+const deleteGoal = async (id) => {
+  const goal = await getGoalById(id);
+  if (!goal) {
+    return "Cannot find Goal";
+  }
+  await goal.remove();
+  return goal;
+};
 
 module.exports = {
   createGoal,
   getGoals,
   updateGoal,
-  deleteGoal
+  deleteGoal,
+  updateGoalStep
 };

@@ -37,6 +37,18 @@ const goalSchema = mongoose.Schema(
       type: [stepSchema],
       required: false,
     },
+    employeeId: {
+      type: String,
+      required: true,
+    },
+    companyId: {
+      type: String,
+      required: true,
+    },
+    progress: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
