@@ -41,6 +41,12 @@ const updateGoalStep = async (id, update) => {
     e.isDone === true ? completed = completed +1 : null
   });
   update.progress = completed / update.steps.length * 100;
+  if(update.progress === 100){
+    update.isCompleted = true;
+  }else{
+    update.isCompleted = false;
+
+  }
   Object.assign(goal, update);
   await goal.save();
   return goal;
