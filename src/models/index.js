@@ -5,6 +5,8 @@ module.exports.Team = require('./team.model');
 module.exports.Survey = require('./survey.model');
 module.exports.Token = require('./token.model');
 module.exports.Notification = require('./notifications.model');
+module.exports.Metrics = require('./metrics.model');
+
 
 
 

@@ -7,6 +7,8 @@ const companyRoute = require('./company/company.route');
 const teamRoute = require('./team/team.route');
 const surveyRoute = require('./survey/survey.route');
 const notiRoute = require('./noti/noti.route');
+const metricsRoute = require('./metrics/metrics.route');
+
 
 
 
@@ -20,6 +22,8 @@ router.use('/company', companyRoute);
 router.use('/team', teamRoute);
 router.use('/survey', surveyRoute);
 router.use('/noti', notiRoute);
+router.use('/metrics', metricsRoute);
+
 
 
 
