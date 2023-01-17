@@ -17,8 +17,14 @@ const updateTeamById = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(result);
 });
 
+const deleteTeam = catchAsync(async (req, res) => {
+  const result = await teamService.deleteTeam(req.params.id);
+  res.status(httpStatus.CREATED).send(result);
+});
+
 module.exports = {
   createTeam,
   getTeamById,
   updateTeamById,
+  deleteTeam
 };

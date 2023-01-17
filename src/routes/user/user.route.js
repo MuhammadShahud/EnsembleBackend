@@ -18,7 +18,7 @@ router.route('/profilePic/:id').patch(upload.single('file'),userController.postP
 router.route('/changePass/:id').patch(userService.changePassword)
 router.route('/:id')
   .get(userController.getUserById)
-// .delete(userController.deleteUser)
+.delete(userController.deleteUser)
 .patch(userController.updateUserById);
 
 module.exports = router;

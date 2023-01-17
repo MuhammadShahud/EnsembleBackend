@@ -39,6 +39,10 @@ const updateUserById = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(result);
 });
 
+const deleteUser = catchAsync(async (req, res) => {
+  const result = await userService.deleteUserById(req.params.id);
+  res.status(httpStatus.CREATED).send(result);
+});
 
 
 
@@ -49,5 +53,6 @@ module.exports = {
   postPic,
   getUserById,
   updateUserById,
-  changePassword
+  changePassword,
+  deleteUser
 };

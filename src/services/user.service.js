@@ -5,6 +5,7 @@ const ApiError = require("../utils/APIError");
 const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
+const companyService = require("../services/company.service")
 
 
 
@@ -73,7 +74,18 @@ const deleteUserById = async (userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   await user.remove();
-  return user;
+
+  const company = await companyService.getCompanyById(user.companyId);
+  console.log('newCompany',company.employeeId);
+
+ 
+ const array = company.employeeId.filter(e=>e !== user.id)
+ const obj = {
+  employeeId : array
+}
+  const newCompany = await companyService.updateCompanyById(user.companyId,obj);
+  console.log('newCompany',newCompany);
+  return "Employee has been deleted";
 };
 
 const changePassword = async (req, res) => {

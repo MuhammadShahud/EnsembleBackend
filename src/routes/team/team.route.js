@@ -10,6 +10,6 @@ router.route("/")
 router.route('/:id')
 .patch(teamController.updateTeamById)
 .get(teamController.getTeamById)
-
+.delete(teamController.deleteTeam)
 
 module.exports = router;

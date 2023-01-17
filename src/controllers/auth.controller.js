@@ -190,8 +190,22 @@ const signup = async (req, res, next) => {
                   </html>`,
                 };
 
-                transport.sendMail(mailOptions, (error, info) => {
+                transport.sendMail(mailOptions, async (error, info) => {
                   console.log("workingg");
+                  const company = await companyService.getCompanyById(
+                    response.companyId
+                  );
+                  console.log("newCompany", company.employeeId);
+
+                  const obj = {
+                    employeeId: company.employeeId,
+                  };
+                  obj.employeeId.push(response.id);
+                  const newCompany = await companyService.updateCompanyById(
+                    response.companyId,
+                    obj
+                  );
+                  console.log("newCompany", newCompany);
 
                   if (error) {
                     console.log(" not workingg", error);
@@ -200,6 +214,7 @@ const signup = async (req, res, next) => {
                       .status(400)
                       .json({ message: "Error Please try again" });
                   } else {
+                  
                     res.status(200).json({
                       success: true,
                       result: response,
@@ -836,11 +851,9 @@ const changePasswordCompany = async (req, res) => {
           console.log("err3");
         });
     } else {
-      return res
-        .status(400)
-        .json({
-          errors: [{ message: "password and confirm password does not match" }],
-        });
+      return res.status(400).json({
+        errors: [{ message: "password and confirm password does not match" }],
+      });
     }
   } catch (error) {
     return res.status(400).json({ errors: [{ message: error.message }] });

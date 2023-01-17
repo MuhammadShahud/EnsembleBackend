@@ -18,6 +18,8 @@ const getCompanyById = async (id) => {
   return company;
 };
 
+
+
 const updateCompanyById = async (userId, updateBody) => {
   console.log(mongoose.Types.ObjectId.isValid(userId));
 
