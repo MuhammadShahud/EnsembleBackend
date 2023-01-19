@@ -3,23 +3,48 @@ const { Metrics } = require("../models");
 const ApiError = require("../utils/APIError");
 const httpStatus = require("http-status");
 var mongoose = require("mongoose");
+const surveyService = require("./survey.service");
+const fixedSurveyService = require("./fixedSurvey.service");
 
 const createMetrics = async (body) => {
-  const metrics = await Metrics.create(body);
-  return metrics;
+  const obj = {
+    metrics: body.metrics,
+  };
+  let array = [];
+  let metrics;
+  const fixedSurveys = await fixedSurveyService
+    .paginateSurveys(obj, [])
+    .then((r) => {
+      r.results.forEach(async (e, i) => {
+        const object = {
+          question: e.question,
+          companyId: body.companyId
+        };
+        const survey = await surveyService.createSurvey(object);
+        console.log("starttt", survey.id);
+        array.push(survey.id);
+
+        if (i === r.results.length - 1) {
+          body.surveyId = array;
+          metrics = await Metrics.create(body);
+          console.log("enndddd", metrics, array, r);
+        }
+      });
+    });
+    return metrics;
 };
 
 const getMetricsById = async (id) => {
-  const team = await Metrics.findById(id)
+  const team = await Metrics.findById(id).populate('surveyId');
   if (!team) {
     throw new ApiError(httpStatus.NOT_FOUND, "Metrics not found");
   }
   return team;
 };
 
-const getMetrics = async (filter, options) => {
-    const products = Metrics.paginate(filter, options);
-    return products;
+const getMetrics = async (body) => {
+  const products = Metrics.find({companyId:body.companyId}).populate('surveyId');
+  return products;
 };
 
 const updateMetricsById = async (userId, updateBody) => {
@@ -29,13 +54,17 @@ const updateMetricsById = async (userId, updateBody) => {
   }
   let total = 0;
   let sAgree = 0;
-  updateBody.surveys.forEach((e) => {
-    sAgree = sAgree + e.response.filter((f) => f === 5).length;
-    total = total + e.response.length;
+  metrics.surveyId.forEach((e) => {
+    sAgree = sAgree + e.score5;
+    total = total + 1;
+
   });
-  metrics.score = Math.floor(sAgree / total * 100);
+  console.log("Aaaaaaaaa",sAgree,total);
+
+  console.log("perc",Math.floor((sAgree / total)));
+  metrics.score = Math.floor((sAgree / total) );
   Object.assign(metrics, updateBody);
-  console.log('metrics',metrics,updateBody);
+  console.log("metrics", metrics, updateBody);
   await metrics.save();
   return metrics;
 };

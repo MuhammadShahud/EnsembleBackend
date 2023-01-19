@@ -14,11 +14,8 @@ const createMetrics = catchAsync(async (req, res) => {
 
 const getMetrics = catchAsync(async (req, res) => {
   console.log("req", req);
-  const filters = pick(req.query, ['companyId']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await metricsService.getMetrics(
-      filters,
-      options,
+     req.body
   );
   res
     .status(httpStatus.CREATED)

@@ -7,6 +7,8 @@ module.exports.teamService = require('./team.service');
 module.exports.surveyService = require('./survey.service');
 module.exports.notiService = require('./notification.service');
 module.exports.metricsService = require('./metrics.service');
+module.exports.fixedSurveyService = require('./fixedSurvey.service');
+
 
 
 

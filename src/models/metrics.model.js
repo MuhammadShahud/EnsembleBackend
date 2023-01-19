@@ -2,14 +2,7 @@
 const mongoose = require("mongoose");
 const { toJSON, paginate } = require("./plugins");
 
-const surveySchema = mongoose.Schema({
-  question: {
-    type: String,
-    required: true,
-  },
-  response: [Number],
 
-});
 
 const metricsSchema = mongoose.Schema(
   {
@@ -29,10 +22,12 @@ const metricsSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    surveys: {
-      type: [surveySchema],
-      required: false,
-    },
+    surveyId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "survey",
+      },
+    ],
   },
   {
     timestamps: true,

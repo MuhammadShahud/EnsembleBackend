@@ -6,6 +6,8 @@ module.exports.Survey = require('./survey.model');
 module.exports.Token = require('./token.model');
 module.exports.Notification = require('./notifications.model');
 module.exports.Metrics = require('./metrics.model');
+module.exports.FixedSurvey = require('./fixedSurvey.model');
+
 
 
 

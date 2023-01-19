@@ -8,6 +8,8 @@ const teamRoute = require('./team/team.route');
 const surveyRoute = require('./survey/survey.route');
 const notiRoute = require('./noti/noti.route');
 const metricsRoute = require('./metrics/metrics.route');
+const fixedSurveyRoute = require('./fixedSurvey/fixedSurvey.route');
+
 
 
 
@@ -23,6 +25,8 @@ router.use('/team', teamRoute);
 router.use('/survey', surveyRoute);
 router.use('/noti', notiRoute);
 router.use('/metrics', metricsRoute);
+router.use('/fixedSurvey', fixedSurveyRoute);
+
 
 
 

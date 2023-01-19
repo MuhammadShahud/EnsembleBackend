@@ -2,39 +2,19 @@
 const mongoose = require("mongoose");
 const { toJSON, paginate } = require("./plugins");
 
+
 const surveySchema = mongoose.Schema(
   {
     question: {
       type: String,
       required: true,
     },
-    response: [Number],
-
-    companyId: {
+    metrics: {
       type: String,
       required: true,
     },
-    score5: {
-      type: Number,
-      default: 0,
-    },
-    score4: {
-      type: Number,
-      default: 0,
-    },
-    score3: {
-      type: Number,
-      default: 0,
-    },
-    score2: {
-      type: Number,
-      default: 0,
-    },
-    score1: {
-      type: Number,
-      default: 0,
-    },
-  
+   
+
   },
   {
     timestamps: true,
@@ -43,5 +23,5 @@ const surveySchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 surveySchema.plugin(toJSON);
 surveySchema.plugin(paginate);
-const Survey = mongoose.model("survey", surveySchema);
+const Survey = mongoose.model("fixedSurvey", surveySchema);
 module.exports = Survey;

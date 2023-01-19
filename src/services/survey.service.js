@@ -10,7 +10,8 @@ const createSurvey = async (body) => {
 };
 
 const getSurveys = async (req) => {
-  const products = Survey.find();
+  console.log(req);
+  const products = Survey.find({ companyId: req.companyId });
   return products;
 };
 
@@ -25,8 +26,35 @@ const updateSurvey = async (id, update) => {
   if (!survey) {
     throw new ApiError(httpStatus.NOT_FOUND, "Survey not found.");
   }
+  let total = 0;
+  let s5 = 0;
+  let s4 = 0;
+  let s3 = 0;
+  let s2 = 0;
+  let s1 = 0;
+
+  s5 = update.response.filter((f) => f === 5).length;
+  total = update.response.length;
+  survey.score5 = Math.floor((s5 / total) * 100);
+
+  s4 = update.response.filter((f) => f === 4).length;
+  total = update.response.length;
+  survey.score4 = Math.floor((s4 / total) * 100);
+  
+  s3 = update.response.filter((f) => f === 3).length;
+  total = update.response.length;
+  survey.score3 = Math.floor((s3 / total) * 100);
+
+  s2 = update.response.filter((f) => f === 2).length;
+  total = update.response.length;
+  survey.score2 = Math.floor((s2 / total) * 100);
+
+  s1 = update.response.filter((f) => f === 1).length;
+  total = update.response.length;
+  survey.score1 = Math.floor((s1 / total) * 100);
   Object.assign(survey, update);
   await survey.save();
+
   return survey;
 };
 
