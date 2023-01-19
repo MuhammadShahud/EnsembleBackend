@@ -43,7 +43,7 @@ const getMetricsById = async (id) => {
 };
 
 const getMetrics = async (body) => {
-  const products = Metrics.find({companyId:body.companyId}).populate('surveyId');
+  const products = Metrics.find({companyId:body}).populate('surveyId');
   return products;
 };
 

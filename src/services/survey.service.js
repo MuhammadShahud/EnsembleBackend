@@ -11,7 +11,7 @@ const createSurvey = async (body) => {
 
 const getSurveys = async (req) => {
   console.log(req);
-  const products = Survey.find({ companyId: req.companyId });
+  const products = Survey.find({ companyId: req });
   return products;
 };
 

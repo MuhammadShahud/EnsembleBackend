@@ -13,8 +13,9 @@ const createSurvey = catchAsync(async (req, res) => {
 });
 
 const getSurveys = catchAsync(async (req, res) => {
-  console.log("req", req);
-  const result = await surveyService.getSurveys(req.body);
+ 
+  console.log("req", req.query);
+  const result = await surveyService.getSurveys(req.query.companyId);
   res
     .status(httpStatus.CREATED)
     .send({ message: "Got all Surveys", result });
