@@ -64,7 +64,7 @@ const updateSurvey = async (id, update) => {
   Object.assign(survey, update.update);
   await survey.save();
 
-  return survey;
+  return newCompany;
 };
 
 module.exports = {
