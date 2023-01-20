@@ -100,7 +100,12 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    completedSurveys: [String],
+    completedSurveys: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "survey",
+      },
+    ],
   },
   {
     timestaps: true,
