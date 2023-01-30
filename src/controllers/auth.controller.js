@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const { createJWT } = require("../utils/auth");
 const config = require("../config/config");
 const nodemailer = require("nodemailer");
+const ApiError = require("../utils/APIError");
 
 const emailRegexp =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -316,7 +317,10 @@ const forgetPassword = async (req, res) => {
   console.log(email);
   try {
     if (email) {
+
       const isUser = await User.findOne({ email: email });
+      console.log("if",isUser);
+
       if (isUser) {
         // generate token
         const secretKey = isUser._id + "Shahud";
@@ -456,7 +460,10 @@ const forgetPassword = async (req, res) => {
           }
         });
       } else {
-        return res.status(400).json({ message: "Invalid Email" });
+        console.log("else");
+
+        throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
       }
 
       isUser.forgetCode = forgetCode;

@@ -5,9 +5,7 @@ const ApiError = require("../utils/APIError");
 const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
-const companyService = require("../services/company.service")
-
-
+const companyService = require("../services/company.service");
 
 const createUser = async (userBody) => {
   console.log((await User.find({ orderId: userBody.orderId })).length);
@@ -43,11 +41,9 @@ const getAllUsers = async () => {
   return users;
 };
 
-
 const getUserById = async (id) => {
   return User.findById(id);
 };
-
 
 const getUserByEmail = async (email, token) => {
   return User.findOneAndUpdate(
@@ -76,15 +72,17 @@ const deleteUserById = async (userId) => {
   await user.remove();
 
   const company = await companyService.getCompanyById(user.companyId);
-  console.log('newCompany',company.employeeId);
+  console.log("newCompany", company.employeeId);
 
- 
- const array = company.employeeId.filter(e=>e !== user.id)
- const obj = {
-  employeeId : array
-}
-  const newCompany = await companyService.updateCompanyById(user.companyId,obj);
-  console.log('newCompany',newCompany);
+  const array = company.employeeId.filter((e) => e !== user.id);
+  const obj = {
+    employeeId: array,
+  };
+  const newCompany = await companyService.updateCompanyById(
+    user.companyId,
+    obj
+  );
+  console.log("newCompany", newCompany);
   return "Employee has been deleted";
 };
 
@@ -102,32 +100,34 @@ const changePassword = async (req, res) => {
           console.log("isMatch");
           if (isMatch) {
             console.log("isMatch2");
-            bcrypt.genSalt(10, function (err, salt) {
-              bcrypt.hash(newPassword, salt, function (err, hash) {
-                console.log("hash",isUser.password,hash);
-                if (err) throw err;
-                isUser.password = hash;
-             
-              });
+            bcrypt.compare(newPassword, isUser.password).then(async (match) => {
+              if (match) {
+                return res.status(400).json({
+                  errors: [{ message: "You should try something deiffent" }],
+                });
+              } else {
+                bcrypt.genSalt(10, function (err, salt) {
+                  bcrypt.hash(newPassword, salt, async function (err, hash) {
+                    console.log("hash", isUser.password, hash);
+                    if (err) throw err;
+                    isUser.password = hash;
+                    console.log("isUser.password", isUser.password);
+                    const result = await updateUserById(isUser._id, isUser);
+                    return res.status(200).json({
+                      message: "password Changed Successfully",
+                      user: result,
+                    });
+                  });
+                });
+              }
             });
+          } else {
+            console.log("isMatch3");
 
-            const result = await updateUserById(
-              isUser._id,
-              isUser
-            );
-            return res
-              .status(200)
-              .json({
-                message: "password Changed Successfully",
-                user: result,
-              });
-          }else{
-          console.log("isMatch3");
-
-          return res.status(400).json({
-            errors: [{ message: "Wrong Old Password" }],
-          });
-        }
+            return res.status(400).json({
+              errors: [{ message: "Wrong Old Password" }],
+            });
+          }
         })
 
         .catch((err) => {
