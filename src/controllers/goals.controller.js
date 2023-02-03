@@ -13,12 +13,25 @@ const createGoal = catchAsync(async (req, res) => {
 });
 
 const getGoals = catchAsync(async (req, res) => {
-  const filters = pick(req.query, ['employeeId', 'companyId']);
+  const filters = pick(req.query, ['employeeId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await goalsService.getGoals(
       filters,
       options,
   );
+  res.send(result);
+});
+
+const getGoalsByCompany = catchAsync(async (req, res) => {
+  // const filters = pick(req.query, ['companyId']);
+  // const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  // const result = await goalsService.getGoalsByCompany(
+  //     filters,
+  //     options,
+  // );
+  const result = await goalsService.getGoalsByCompany(
+    req.query.companyId
+ );
   res.send(result);
 });
 
@@ -47,5 +60,6 @@ module.exports = {
   getGoals,
   updateGoal,
   deleteGoal,
-  updateGoalStep
+  updateGoalStep,
+  getGoalsByCompany
 };

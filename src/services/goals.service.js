@@ -14,6 +14,12 @@ const getGoals = async (filter, options) => {
   return products;
 };
 
+const getGoalsByCompany = async (body) => {
+  const products = Goal.find({companyId:body}).populate('employeeId');
+
+  return products;
+};
+
 const getGoalById = async (id) => {
   const response = await Goal.findById(id);
   return response;
@@ -66,5 +72,6 @@ module.exports = {
   getGoals,
   updateGoal,
   deleteGoal,
-  updateGoalStep
+  updateGoalStep,
+  getGoalsByCompany
 };

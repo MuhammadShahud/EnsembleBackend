@@ -38,7 +38,8 @@ const goalSchema = mongoose.Schema(
       required: false,
     },
     employeeId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
     companyId: {

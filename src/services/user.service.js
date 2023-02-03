@@ -1,8 +1,6 @@
 const httpStatus = require("http-status");
 const { User } = require("../models");
-const { update } = require("../models/user.model");
 const ApiError = require("../utils/APIError");
-const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const companyService = require("../services/company.service");

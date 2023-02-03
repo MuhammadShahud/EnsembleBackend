@@ -8,6 +8,10 @@ router.route("/")
 .post(authValidation.validateToken,goalsController.createGoal)
 .get(authValidation.validateToken,goalsController.getGoals);
 
+router.route('/goalsByCompany')
+.get(goalsController.getGoalsByCompany);
+
+
 router.route('/:id')
 .patch(authValidation.validateToken,goalsController.updateGoal)
 .delete(authValidation.validateToken,goalsController.deleteGoal)

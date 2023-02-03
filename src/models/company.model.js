@@ -40,7 +40,15 @@ const companySchema = mongoose.Schema(
       type: Number,
       required: false,
     },
+    phoneNumber: {
+      type: Number,
+      required: false,
+    },
     aboutCompany: {
+      type: String,
+      required: false,
+    },
+    location: {
       type: String,
       required: false,
     },

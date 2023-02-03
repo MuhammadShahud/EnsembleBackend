@@ -18,6 +18,7 @@ const getCompanyById = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(company);
 });
 
+
 const updateCompanyById = catchAsync(async (req, res) => {
   const result = await companyService.updateCompanyById(
     req.params.id,
@@ -26,9 +27,21 @@ const updateCompanyById = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(result);
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  const result = await companyService.changePassword(req.body,req.params.id);
+  res.status(httpStatus.CREATED).send(result);
+});
+
+const getStatistics = catchAsync(async (req, res) => {
+  const company = await companyService.getStatistics(req.params.id);
+  res.status(httpStatus.CREATED).send(company);
+});
+
 module.exports = {
   createCompany,
   getCompanyById,
   updateCompanyById,
-  postPic
+  postPic,
+  getStatistics,
+  changePassword
 };
