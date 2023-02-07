@@ -2,11 +2,13 @@
 const mongoose = require("mongoose");
 const { toJSON, paginate } = require("./plugins");
 
-
 const tokenSchema = mongoose.Schema(
   {
-    token: [String]
-
+    token: [String],
+    companyId: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

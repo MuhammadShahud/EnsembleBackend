@@ -92,6 +92,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    token: {
+      type: String,
+      required: false,
+    },
     firstTime: {
       type: Boolean,
       default: true,

@@ -5,32 +5,34 @@ const ApiError = require("../utils/APIError");
 const httpStatus = require("http-status");
 var mongoose = require("mongoose");
 const admin = require("firebase-admin");
+const { userService } = require("./index");
 
 const createNoti = async (req) => {
   const noti = await Notification.create(req);
   const res = await getTokenById("638e8e677bb5e473f75d062c");
-  console.log("asjidjasiodjas",res.token);
-const tokens = res.token;
+  console.log("asjidjasiodjas", res.token);
+  const tokens = res.token;
   console.log("tokens", tokens);
   const { title, text } = req;
   const body = text;
- const firebase = req.navigate? await admin.messaging().sendMulticast({
-    tokens,
-    notification: {
-      title,
-      body,
-    },
-   data: {
-type:req.navigate
- }
-  }): await admin.messaging().sendMulticast({
-    tokens,
-    notification: {
-      title,
-      body,
-    },
- 
-  })
+  const firebase = req.navigate
+    ? await admin.messaging().sendMulticast({
+        tokens,
+        notification: {
+          title,
+          body,
+        },
+        data: {
+          type: req.navigate,
+        },
+      })
+    : await admin.messaging().sendMulticast({
+        tokens,
+        notification: {
+          title,
+          body,
+        },
+      });
 
   return firebase;
 };
@@ -51,21 +53,36 @@ const getTokens = async (req) => {
 };
 
 const getTokenById = async (id) => {
-  const response = await Token.findById(id);
+  const response = await Token.find({companyId : id });
   return response;
 };
 
 const updateToken = async (id, update) => {
   console.log("idddddddddddd", id, "upddateeeeeee", update);
-  const token = await getTokenById(id);
-  if (!token) {
-    throw new ApiError(httpStatus.NOT_FOUND, "token not found.");
+  const user = await userService.getUserById(id);
+  const userObj = {
+    token:update.token
   }
-  if(!token.token.includes(update.token)){
-  token.token.push(update.token)
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
+  let newToken;
+  const token = await getTokenById(update.companyId).then(async(res)=>{
+    console.log("tokennnn",update, res[0].token);
+    !res[0].token.includes(update.token) ? res[0].token.push(update.token) :
+    null
+    console.log("newToken",res[0].token);
+    newToken = {
+      token : res[0].token
+    }
+  });
+
+  Object.assign(token, newToken);
   await token.save();
-  return token;
+  Object.assign(user, userObj);
+
+  await user.save();
+  return user;  
 };
 
 module.exports = {
@@ -74,5 +91,5 @@ module.exports = {
   getTokenById,
   updateToken,
   createNoti,
-  getNoti
+  getNoti,
 };

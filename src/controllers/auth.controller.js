@@ -7,6 +7,7 @@ const { createJWT } = require("../utils/auth");
 const config = require("../config/config");
 const nodemailer = require("nodemailer");
 const ApiError = require("../utils/APIError");
+const { createToken } = require("../services/notification.service");
 
 const emailRegexp =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -494,15 +495,17 @@ const changePassword = async (req, res) => {
             });
           }
           bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(newPassword, salt, function (err, hash) {
+            bcrypt.hash(newPassword, salt,async function (err, hash) {
               if (err) throw err;
               isUser.password = hash;
+              const result = await userService.updateUserById(isUser._id, isUser);
+              return res
+              .status(200)
+              .json({ message: "password Changed Successfully", user: result });
+
             });
           });
-          const result = await userService.updateUserById(isUser._id, isUser);
-          return res
-            .status(200)
-            .json({ message: "password Changed Successfully", user: result });
+        
         })
 
         .catch((err) => {
@@ -519,7 +522,7 @@ const changePassword = async (req, res) => {
   }
 };
 
-const signupCompany = async (req, res, next) => {
+const signupCompany = async (req, res) => {
   let { email, password, password_confirmation } = req.body;
   console.log("companySingup", req.body);
   let errors = [];
@@ -564,7 +567,13 @@ const signupCompany = async (req, res, next) => {
 
             user
               .save()
-              .then((response) => {
+              .then(async(response) => {
+                console.log('response.id',response.id);
+                const token = {
+                  companyId : response.id,
+                  token: []
+                }
+                await createToken(token)
                 res.status(200).json({
                   success: true,
                   result: response,

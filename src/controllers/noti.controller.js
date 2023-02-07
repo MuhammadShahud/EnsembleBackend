@@ -5,20 +5,18 @@ const { notiService } = require("../services");
 const pick = require("../utils/pick");
 
 const createNoti = catchAsync(async (req, res) => {
-      const response = await notiService.createNoti(req.body);
-      console.log("response --> ", response);
-      res
-        .status(httpStatus.CREATED)
-        .send({ message: "Noti has been created", response });
-    });
+  const response = await notiService.createNoti(req.body);
+  console.log("response --> ", response);
+  res
+    .status(httpStatus.CREATED)
+    .send({ message: "Noti has been created", response });
+});
 
-    const getNoti = catchAsync(async (req, res) => {
-      console.log("req", req);
-      const result = await notiService.getNoti(req);
-      res
-        .status(httpStatus.CREATED)
-        .send({ message: "Got all Noti", result });
-    });
+const getNoti = catchAsync(async (req, res) => {
+  console.log("req", req);
+  const result = await notiService.getNoti(req);
+  res.status(httpStatus.CREATED).send({ message: "Got all Noti", result });
+});
 
 const createToken = catchAsync(async (req, res) => {
   const response = await notiService.createToken(req.body);
@@ -31,9 +29,7 @@ const createToken = catchAsync(async (req, res) => {
 const getTokens = catchAsync(async (req, res) => {
   console.log("req", req);
   const result = await notiService.getTokens(req);
-  res
-    .status(httpStatus.CREATED)
-    .send({ message: "Got all Tokens", result });
+  res.status(httpStatus.CREATED).send({ message: "Got all Tokens", result });
 });
 
 const updateToken = catchAsync(async (req, res) => {
@@ -43,11 +39,10 @@ const updateToken = catchAsync(async (req, res) => {
     .send({ message: "Token has been updated", result });
 });
 
-
 module.exports = {
-      createToken,
-      getTokens,
-      updateToken,
-      createNoti,
-      getNoti
+  createToken,
+  getTokens,
+  updateToken,
+  createNoti,
+  getNoti,
 };
