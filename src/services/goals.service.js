@@ -56,7 +56,7 @@ const getGoals = async (filter, options) => {
     //   ? (newDate[1] = "Dec")
     //   : null;
     //   console.log("newDate",newDate);
-    const date = moment(e.dueDate).format("Do,MMM,YYYY");
+    const date = moment(e.dueDate).format("DD,MMM,YYYY");
 
     goals.results[i] = {
       _id: e.id,
