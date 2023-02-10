@@ -13,7 +13,7 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 const postPic = catchAsync(async (req, res) => {
-  console.log('req.file',req.file);
+  console.log('req.file',req.body);
   const user = await userService.postPic(req.params.id,req.file);
   res.status(httpStatus.CREATED).send(user);
 });

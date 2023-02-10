@@ -5,29 +5,36 @@ const httpStatus = require("http-status");
 var mongoose = require("mongoose");
 const surveyService = require("./survey.service");
 const fixedSurveyService = require("./fixedSurvey.service");
+const { notiService } = require("./index");
 
 const createMetrics = async (body) => {
   const obj = {
     metrics: body.metrics,
   };
+  let noti = {
+    title:body.title,
+    text : "Start a New Survey",
+    navigate:"Surveys",
+    companyId:body.companyId,
+    type : "Surveys"
+  }
   let array = [];
   let metrics;
   const fixedSurveys = await fixedSurveyService
     .paginateSurveys(obj, [])
-    .then((r) => {
+    .then(async(r) => {
+      await notiService.createNoti(noti.companyId,noti)
       r.results.forEach(async (e, i) => {
         const object = {
           question: e.question,
           companyId: body.companyId
         };
         const survey = await surveyService.createSurvey(object);
-        console.log("starttt", survey.id);
         array.push(survey.id);
 
         if (i === r.results.length - 1) {
           body.surveyId = array;
           metrics = await Metrics.create(body);
-          console.log("enndddd", metrics, array, r);
         }
       });
     });

@@ -29,6 +29,11 @@ const goalSchema = mongoose.Schema(
       required: false,
       default: false,
     },
+    reminder: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     dueDate: {
       type: Date,
       required: true,
