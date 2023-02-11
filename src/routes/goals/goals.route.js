@@ -11,6 +11,9 @@ router.route("/")
 router.route('/goalsByCompany')
 .get(goalsController.getGoalsByCompany);
 
+router.route('/getGaolsDashboard')
+.get(goalsController.getGoalsDashboard);
+
 
 router.route('/:id')
 .patch(authValidation.validateToken,goalsController.updateGoal)

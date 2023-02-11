@@ -29,33 +29,6 @@ const getGoals = async (filter, options) => {
     results: [],
   };
   products.results.forEach((e, i) => {
-    // let newDate = e.dueDate.toString().split("T")[0].split("-");
-    // newDate[1] === "01"
-    //   ? (newDate[1] = "Jan")
-    //   : newDate[1] === "02"
-    //   ? (newDate[1] = "Feb")
-    //   : newDate[1] === "03"
-    //   ? (newDate[1] = "Mar")
-    //   : newDate[1] === "04"
-    //   ? (newDate[1] = "Apr")
-    //   : newDate[1] === "05"
-    //   ? (newDate[1] = "May")
-    //   : newDate[1] === "06"
-    //   ? (newDate[1] = "Jun")
-    //   : newDate[1] === "07"
-    //   ? (newDate[1] = "Jul")
-    //   : newDate[1] === "08"
-    //   ? (newDate[1] = "Aug")
-    //   : newDate[1] === "09"
-    //   ? (newDate[1] = "Sep")
-    //   : newDate[1] === "10"
-    //   ? (newDate[1] = "Oct")
-    //   : newDate[1] === "11"
-    //   ? (newDate[1] = "Nov")
-    //   : newDate[1] === "12"
-    //   ? (newDate[1] = "Dec")
-    //   : null;
-    //   console.log("newDate",newDate);
     const date = moment(e.dueDate).format("DD,MMM,YYYY");
 
     goals.results[i] = {
@@ -74,10 +47,16 @@ const getGoals = async (filter, options) => {
     };
 
     // products.results[i].dueDate = moment(e.dueDate).format("Do,MMM,YYYY")
-    console.log("products",e, goals.results[i]);
+    console.log("products", e, goals.results[i]);
   });
   // console.log("endddd",products);
   return goals;
+};
+
+const getGoalsDashboard = async (id) => {
+  let products = await Goal.find({ employeeId: id }).populate("employeeId");
+
+  return products;
 };
 
 const getGoalsByCompany = async (body) => {
@@ -139,4 +118,5 @@ module.exports = {
   deleteGoal,
   updateGoalStep,
   getGoalsByCompany,
+  getGoalsDashboard,
 };

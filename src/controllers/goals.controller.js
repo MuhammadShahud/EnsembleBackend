@@ -22,6 +22,14 @@ const getGoals = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getGoalsDashboard = catchAsync(async (req, res) => {
+console.log(req.query.employeeId);
+  const result = await goalsService.getGoalsDashboard(
+    req.query.employeeId
+  );
+  res.send(result);
+});
+
 const getGoalsByCompany = catchAsync(async (req, res) => {
   // const filters = pick(req.query, ['companyId']);
   // const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -61,5 +69,6 @@ module.exports = {
   updateGoal,
   deleteGoal,
   updateGoalStep,
-  getGoalsByCompany
+  getGoalsByCompany,
+  getGoalsDashboard
 };
