@@ -58,6 +58,7 @@ const updateUserById = async (userId, updateBody) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
+  
   Object.assign(user, updateBody);
   await user.save();
   return user;

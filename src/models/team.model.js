@@ -14,7 +14,7 @@ const teamSchema = mongoose.Schema(
     },
     teamLead:{
       type:String,
-      required:true
+      required:false
     },
     teamColor:{
       type:String,

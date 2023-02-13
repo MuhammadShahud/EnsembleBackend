@@ -7,7 +7,7 @@ const { createGoalNoti } = require("./extraServices/noti.service");
 const { object } = require("joi");
 
 const createGoal = async (body) => {
-  // const goal = await Goal.create(body);
+  const goal = await Goal.create(body);
   if (body.reminder === true) {
     console.log("notiiii");
     let noti = {

@@ -1,5 +1,5 @@
 const httpStatus = require("http-status");
-const { userService, companyService } = require("../services");
+const { userService, companyService, teamService } = require("../services");
 const { User, Company } = require("../models/index");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -119,7 +119,7 @@ const signup = async (req, res, next) => {
                                               </p>
                                               <a href=#
                                               style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${email}</a>
-                                              <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${password}</a>
+                                              <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Password : ${password}</a>
                                           </td>
                                       </tr>
                                       <tr>
@@ -173,7 +173,7 @@ const signup = async (req, res, next) => {
                                                         </p>
                                                         <a href=#
                                                             style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${email}</a>
-                                                            <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${password}</a>
+                                                            <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Password : ${password}</a>
 
                                                     </td>
                                                 </tr>
@@ -197,7 +197,14 @@ const signup = async (req, res, next) => {
                   const company = await companyService.getCompanyById(
                     response.companyId
                   );
-                  console.log("newCompany", company.employeeId);
+                  const team = teamId
+                    ? await teamService.getTeamById(response.teamId)
+                    : null;
+                  console.log(
+                    "newCompany",
+                    company.employeeId,
+                    team.employeeId
+                  );
 
                   const obj = {
                     employeeId: company.employeeId,
@@ -207,7 +214,16 @@ const signup = async (req, res, next) => {
                     response.companyId,
                     obj
                   );
-                  console.log("newCompany", newCompany);
+                  const objTeam = {
+                    employeeId: team.employeeId,
+                  };
+                  objTeam.employeeId.push(response.id);
+                  const newTeam = await teamService.updateTeamById(
+                    response.teamId,
+                    objTeam
+                  );
+
+                  console.log("newCompany", newCompany,newTeam);
 
                   if (error) {
                     console.log(" not workingg", error);
@@ -216,7 +232,6 @@ const signup = async (req, res, next) => {
                       .status(400)
                       .json({ message: "Error Please try again" });
                   } else {
-                  
                     res.status(200).json({
                       success: true,
                       result: response,
@@ -318,9 +333,8 @@ const forgetPassword = async (req, res) => {
   console.log(email);
   try {
     if (email) {
-
       const isUser = await User.findOne({ email: email });
-      console.log("if",isUser);
+      console.log("if", isUser);
 
       if (isUser) {
         // generate token
@@ -464,7 +478,6 @@ const forgetPassword = async (req, res) => {
         console.log("else");
 
         throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-
       }
 
       isUser.forgetCode = forgetCode;
@@ -495,17 +508,19 @@ const changePassword = async (req, res) => {
             });
           }
           bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(newPassword, salt,async function (err, hash) {
+            bcrypt.hash(newPassword, salt, async function (err, hash) {
               if (err) throw err;
               isUser.password = hash;
-              const result = await userService.updateUserById(isUser._id, isUser);
-              return res
-              .status(200)
-              .json({ message: "password Changed Successfully", user: result });
-
+              const result = await userService.updateUserById(
+                isUser._id,
+                isUser
+              );
+              return res.status(200).json({
+                message: "password Changed Successfully",
+                user: result,
+              });
             });
           });
-        
         })
 
         .catch((err) => {
@@ -567,13 +582,13 @@ const signupCompany = async (req, res) => {
 
             user
               .save()
-              .then(async(response) => {
-                console.log('response.id',response.id);
+              .then(async (response) => {
+                console.log("response.id", response.id);
                 const token = {
-                  companyId : response.id,
-                  token: []
-                }
-                await createToken(token)
+                  companyId: response.id,
+                  token: [],
+                };
+                await createToken(token);
                 res.status(200).json({
                   success: true,
                   result: response,

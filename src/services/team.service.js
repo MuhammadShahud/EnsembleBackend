@@ -80,10 +80,17 @@ const deleteTeam = async (id) => {
   if (!team) {
     return "Cannot find team";
   }
-  await team.remove();
 
   const company = await companyService.getCompanyById(team.companyId);
   console.log("newCompany", company.teamId);
+
+  const userTeam = {
+    teamId:"",
+  };
+
+  team.employeeId.forEach(async (e) => {
+    await userService.updateUserById(e, userTeam);
+  });
 
   const array = company.teamId.filter((e) => e !== team.id);
   const obj = {
@@ -94,6 +101,8 @@ const deleteTeam = async (id) => {
     obj
   );
   console.log("newCompany", newCompany);
+  await team.remove();
+
   return "team has been deleted";
 };
 module.exports = {
