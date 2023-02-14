@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
-const { Goal } = require("../models");
+const { Goal, User } = require("../models");
 const ApiError = require("../utils/APIError");
 const httpStatus = require("http-status");
 const moment = require("moment");
 const { createGoalNoti } = require("./extraServices/noti.service");
-const { object } = require("joi");
 
 const createGoal = async (body) => {
   const goal = await Goal.create(body);
@@ -25,6 +24,7 @@ const createGoal = async (body) => {
 
 const getGoals = async (filter, options) => {
   let products = await Goal.paginate(filter, options);
+  console.log("filter", filter);
   let goals = {
     results: [],
   };
@@ -45,11 +45,17 @@ const getGoals = async (filter, options) => {
       updatedAt: e.updatedAt,
       __v: e.__v,
     };
-
-    // products.results[i].dueDate = moment(e.dueDate).format("Do,MMM,YYYY")
-    console.log("products", e, goals.results[i]);
   });
-  // console.log("endddd",products);
+
+  const user = await User.findById(filter.employeeId);
+  const obj = {
+    goalsCompleted: goals.results.filter((e) => e.isCompleted === true).length,
+  };
+
+  console.log("user", obj.goalsCompleted, goals.results.length);
+  Object.assign(user, obj);
+  await user.save();
+
   return goals;
 };
 

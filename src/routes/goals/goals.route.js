@@ -11,7 +11,7 @@ router.route("/")
 router.route('/goalsByCompany')
 .get(goalsController.getGoalsByCompany);
 
-router.route('/getGaolsDashboard')
+router.route('/getGoalsDashboard')
 .get(goalsController.getGoalsDashboard);
 
 

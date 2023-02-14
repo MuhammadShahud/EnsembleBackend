@@ -72,6 +72,10 @@ const userSchema = mongoose.Schema(
       type: Number,
       required: false,
     },
+    goalsCompleted: {
+      type: Number,
+      required: false,
+    },
     questions: {
       type: Questions,
       required: false,
