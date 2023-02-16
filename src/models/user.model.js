@@ -95,6 +95,7 @@ const userSchema = mongoose.Schema(
     teamId: {
       type: String,
       required: false,
+      default:""
     },
     token: {
       type: String,

@@ -197,14 +197,6 @@ const signup = async (req, res, next) => {
                   const company = await companyService.getCompanyById(
                     response.companyId
                   );
-                  const team = teamId
-                    ? await teamService.getTeamById(response.teamId)
-                    : null;
-                  console.log(
-                    "newCompany",
-                    company.employeeId,
-                    team.employeeId
-                  );
 
                   const obj = {
                     employeeId: company.employeeId,
@@ -214,16 +206,18 @@ const signup = async (req, res, next) => {
                     response.companyId,
                     obj
                   );
-                  const objTeam = {
-                    employeeId: team.employeeId,
-                  };
-                  objTeam.employeeId.push(response.id);
-                  const newTeam = await teamService.updateTeamById(
-                    response.teamId,
-                    objTeam
-                  );
+                  if (response.teamId) {
+                    const team = await teamService.getTeamById(response.teamId)
+                    console.log("answerr",team.employeeId);
 
-                  console.log("newCompany", newCompany,newTeam);
+                    const objTeam = {
+                      employeeId: team.employeeId,
+                    };
+                    objTeam.employeeId.push(response.id);
+                    console.log("answerr222",objTeam.employeeId);
+                      Object.assign(team, objTeam);
+                      await team.save();
+                  }
 
                   if (error) {
                     console.log(" not workingg", error);
@@ -863,18 +857,21 @@ const changePasswordCompany = async (req, res) => {
             });
           }
           bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(newPassword, salt, function (err, hash) {
+            bcrypt.hash(newPassword, salt, async function (err, hash) {
               if (err) throw err;
               isUser.password = hash;
+              const result = await companyService.updateCompanyById(
+                isUser._id,
+                isUser
+              );
+              return res
+                .status(200)
+                .json({
+                  message: "password Changed Successfully",
+                  user: result,
+                });
             });
           });
-          const result = await companyService.updateCompanyById(
-            isUser._id,
-            isUser
-          );
-          return res
-            .status(200)
-            .json({ message: "password Changed Successfully", user: result });
         })
 
         .catch((err) => {

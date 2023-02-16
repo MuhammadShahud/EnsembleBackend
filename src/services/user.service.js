@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 const companyService = require("../services/company.service");
 // const teamService  = require("../services/team.service");
 
-
 const createUser = async (userBody) => {
   console.log((await User.find({ orderId: userBody.orderId })).length);
   if ((await User.find({ orderId: userBody.orderId })).length > 0) {
@@ -59,56 +58,42 @@ const updateUserById = async (userId, updateBody) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
-  if(updateBody.teamId ){
-  // const team = await teamService.getTeamById(response.teamId);
-  const oldTeam = await Team.findById(user.teamId);
-  console.log("newTeam",oldTeam.employeeId.indexOf(user.id));
-  oldTeam.employeeId.splice(oldTeam.employeeId.indexOf(user.id),1)
-  const objOldTeam = {
-    employeeId:oldTeam.employeeId
-  };
-  console.log("newTeam",objOldTeam,oldTeam.employeeId);
+  if (updateBody.teamId) {
+    if (user.teamId) {
+      const oldTeam = await Team.findById(user.teamId);
+      console.log("oldTeammm",oldTeam,user);
+      if(oldTeam){
+      console.log("newTeam", oldTeam.employeeId.indexOf(user.id));
+      oldTeam.employeeId.splice(oldTeam.employeeId.indexOf(user.id), 1);
+      const objOldTeam = {
+        employeeId: oldTeam.employeeId,
+      };
+      console.log("newTeam", objOldTeam, oldTeam.employeeId);
 
-  Object.assign(oldTeam,objOldTeam);
-  await oldTeam.save();
-  // 63bc865b79632691b9f868e2
-  // 63ebba3b7b124d70be96c771
-  const team = await Team.findById(updateBody.teamId);
-  if (!team) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Team not found");
-  }
-  const objTeam = {
-    employeeId: team.employeeId,
-  };
- !team.employeeId.includes(user.id)? objTeam.employeeId.push(user.id): null;
-  Object.assign(team,objTeam);
-  await team.save();
+      Object.assign(oldTeam, objOldTeam);
+      await oldTeam.save();
+    }
+    }
 
- 
-
+    const team = await Team.findById(updateBody.teamId);
+    if (!team) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Team not found");
+    }
+    const objTeam = {
+      employeeId: team.employeeId,
+    };
+    !team.employeeId.includes(user.id)
+      ? objTeam.employeeId.push(user.id)
+      : null;
+    Object.assign(team, objTeam);
+    await team.save();
   }
   Object.assign(user, updateBody);
   await user.save();
   return user;
 };
 
-// const updateUserToken = async (userId, updateBody) => {
-//   const user = await getUserById(userId);
-//   if (!user) {
-//     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-//   }
-//   const token = await getTokenById(updateBody.companyId);
-//   !token.token.includes(updateBody.token) ? token.token.push(updateBody.token) :
-//   null
-//   const newToken = {
-//     token : token.token
-//   }
-//   Object.assign(token, newToken);
-//   Object.assign(user, updateBody);
-//   await token.save();
-//   await user.save();
-//   return user;
-// };
+
 
 const deleteUserById = async (userId) => {
   const user = await getUserById(userId);
@@ -128,18 +113,18 @@ const deleteUserById = async (userId) => {
     user.companyId,
     obj
   );
-  if(user.teamId){
-  const oldTeam = await Team.findById(user.teamId);
-  console.log("newTeam",oldTeam.employeeId.indexOf(user.id));
-  oldTeam.employeeId.splice(oldTeam.employeeId.indexOf(user.id),1)
-  const objOldTeam = {
-    employeeId:oldTeam.employeeId
-  };
-  console.log("newTeam",objOldTeam,oldTeam.employeeId);
+  if (user.teamId) {
+    const oldTeam = await Team.findById(user.teamId);
+    console.log("newTeam", oldTeam.employeeId.indexOf(user.id));
+    oldTeam.employeeId.splice(oldTeam.employeeId.indexOf(user.id), 1);
+    const objOldTeam = {
+      employeeId: oldTeam.employeeId,
+    };
+    console.log("newTeam", objOldTeam, oldTeam.employeeId);
 
-  Object.assign(oldTeam,objOldTeam);
-  await oldTeam.save();
-}
+    Object.assign(oldTeam, objOldTeam);
+    await oldTeam.save();
+  }
   console.log("newCompany", newCompany);
   return "Employee has been deleted";
 };
