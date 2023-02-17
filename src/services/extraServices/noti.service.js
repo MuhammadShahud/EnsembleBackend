@@ -69,7 +69,7 @@ const updateTokenById = async (id, update) => {
   console.log("token", token, id);
 
   if (!token) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    throw new ApiError(httpStatus.NOT_FOUND, "Token not found");
   }
   console.log("token", token, update);
   Object.assign(token, update);
@@ -90,7 +90,7 @@ const updateToken = async (id, update) => {
     token: update.token,
   };
   let user;
-  await userService.getUserById(id).then(async (res) => {
+  await User.findById(id).then(async (res) => {
     if (!res) {
       throw new ApiError(httpStatus.NOT_FOUND, "User not found");
     }
