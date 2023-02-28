@@ -118,8 +118,8 @@ const signup = async (req, res, next) => {
                                               Your First time login credentials are
                                               </p>
                                               <a href=#
-                                              style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${email}</a>
-                                              <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Password : ${password}</a>
+                                              style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${email}</a>
+                                              <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Password : ${password}</a>
                                           </td>
                                       </tr>
                                       <tr>
@@ -172,8 +172,8 @@ const signup = async (req, res, next) => {
                                                         Your First time login credentials are
                                                         </p>
                                                         <a href=#
-                                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${email}</a>
-                                                            <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Password : ${password}</a>
+                                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Email : ${email}</a>
+                                                            <a href=#    style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Password : ${password}</a>
 
                                                     </td>
                                                 </tr>
