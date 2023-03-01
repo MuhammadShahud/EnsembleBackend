@@ -207,16 +207,16 @@ const signup = async (req, res, next) => {
                     obj
                   );
                   if (response.teamId) {
-                    const team = await teamService.getTeamById(response.teamId)
-                    console.log("answerr",team.employeeId);
+                    const team = await teamService.getTeamById(response.teamId);
+                    console.log("answerr", team.employeeId);
 
                     const objTeam = {
                       employeeId: team.employeeId,
                     };
                     objTeam.employeeId.push(response.id);
-                    console.log("answerr222",objTeam.employeeId);
-                      Object.assign(team, objTeam);
-                      await team.save();
+                    console.log("answerr222", objTeam.employeeId);
+                    Object.assign(team, objTeam);
+                    await team.save();
                   }
 
                   if (error) {
@@ -522,9 +522,9 @@ const changePassword = async (req, res) => {
           console.log("err3");
         });
     } else {
-      return res
-        .status(400)
-        .json({ message: "password and confirm password does not match" });
+      return res.status(400).json({
+        errors: [{ message: "password and confirm password does not match" }],
+      });
     }
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -864,12 +864,10 @@ const changePasswordCompany = async (req, res) => {
                 isUser._id,
                 isUser
               );
-              return res
-                .status(200)
-                .json({
-                  message: "password Changed Successfully",
-                  user: result,
-                });
+              return res.status(200).json({
+                message: "password Changed Successfully",
+                user: result,
+              });
             });
           });
         })
