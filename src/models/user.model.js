@@ -106,6 +106,18 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    firstTimeQuestion: {
+      type: Boolean,
+      default: true,
+    },
+    firstTimeGoal: {
+      type: Boolean,
+      default: true,
+    },
+    firstTimeSurvey: {
+      type: Boolean,
+      default: true,
+    },
     jobTitle: {
       type: String,
       required: true,
