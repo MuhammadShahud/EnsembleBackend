@@ -60,6 +60,10 @@ const companySchema = mongoose.Schema(
       type: Boolean,
       default:true
     },
+    webNoti:{
+      type: Boolean,
+      default:false
+    },
     profilePic: {
       type: String,
       required: false,

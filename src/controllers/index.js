@@ -7,6 +7,7 @@ module.exports.surveyController = require('./survey.controller');
 module.exports.notiController = require('./noti.controller');
 module.exports.metricsController = require('./metrics.controller');
 module.exports.fixedSurveyController = require('./fixedSurvey.controller');
+module.exports.webNotiController = require('./webNoti.controller');
 
 
 
