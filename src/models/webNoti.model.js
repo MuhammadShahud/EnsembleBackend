@@ -13,6 +13,18 @@ const notificationSchema = mongoose.Schema(
     type: String,
     required: true,
   },
+  text: {
+    type: String,
+    required: true,
+  },
+ type: {
+  type:String,
+  required:true
+ },
+ placeholder: {
+  type:String,
+  required:true
+ },
 
   },
   {

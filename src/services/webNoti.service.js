@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 const { WebNoti } = require("../models");
-const admin = require("firebase-admin");
 const { updateCompanyById } = require("./company.service");
 
 const createNoti = async (id, req) => {

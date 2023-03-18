@@ -51,6 +51,7 @@ const updateGoal = catchAsync(async (req, res) => {
 });
 
 const updateGoalStep = catchAsync(async (req, res) => {
+  console.log("iddd",req.params.id);
   const result = await goalsService.updateGoalStep(req.params.id, req.body);
   res
     .status(httpStatus.CREATED)

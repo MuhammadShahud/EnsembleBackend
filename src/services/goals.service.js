@@ -97,6 +97,7 @@ const updateGoalStep = async (id, update) => {
   update.steps.forEach((e) => {
     e.isDone === true ? (completed = completed + 1) : null;
   });
+  console.log('completed',completed);
   update.progress = Math.floor((completed / update.steps.length) * 100);
   if (update.progress === 100) {
     update.isCompleted = true;
