@@ -14,6 +14,10 @@ const surveySchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    metrics: {
+      type: String,
+      required: true,
+    },
     score5: {
       type: Number,
       default: 0,

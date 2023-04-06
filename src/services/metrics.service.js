@@ -26,6 +26,7 @@ const createMetrics = async (body) => {
       await notiService.createNoti(noti.companyId,noti)
       r.results.forEach(async (e, i) => {
         const object = {
+          metrics:e.metrics,
           question: e.question,
           companyId: body.companyId
         };
