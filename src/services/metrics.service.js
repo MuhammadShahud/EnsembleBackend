@@ -12,38 +12,45 @@ const createMetrics = async (body) => {
     metrics: body.metrics,
   };
   let noti = {
-    title:body.title,
-    text : "Start a New Survey",
-    navigate:"Surveys",
-    companyId:body.companyId,
-    type : "Surveys"
-  }
+    title: body.title,
+    text: "Start a New Survey",
+    navigate: "Surveys",
+    companyId: body.companyId,
+    type: "Surveys",
+  };
   let array = [];
   let metrics;
   const fixedSurveys = await fixedSurveyService
     .paginateSurveys(obj, [])
-    .then(async(r) => {
-      await notiService.createNoti(noti.companyId,noti)
+    .then(async (r) => {
+      await notiService.createNoti(noti.companyId, noti);
       r.results.forEach(async (e, i) => {
+        console.log("for");
         const object = {
-          metrics:e.metrics,
+          metrics: e.metrics,
           question: e.question,
-          companyId: body.companyId
+          companyId: body.companyId,
         };
-        const survey = await surveyService.createSurvey(object);
-        array.push(survey.id);
+        const survey = await surveyService
+          .createSurvey(object)
+          .then(async (s) => {
+            console.log("then");
 
-        if (i === r.results.length - 1) {
-          body.surveyId = array;
-          metrics = await Metrics.create(body);
-        }
+            array.push(s.id);
+
+            if (array.length===5) {
+              body.surveyId = array;
+              console.log("detailll", i, r.results.length, array, body);
+              metrics = await Metrics.create(body);
+            }
+          });
       });
     });
-    return metrics;
+  return metrics;
 };
 
 const getMetricsById = async (id) => {
-  const team = await Metrics.findById(id).populate('surveyId');
+  const team = await Metrics.findById(id).populate("surveyId");
   if (!team) {
     throw new ApiError(httpStatus.NOT_FOUND, "Metrics not found");
   }
@@ -51,7 +58,7 @@ const getMetricsById = async (id) => {
 };
 
 const getMetrics = async (body) => {
-  const products = Metrics.find({companyId:body}).populate('surveyId');
+  const products = Metrics.find({ companyId: body }).populate("surveyId");
   return products;
 };
 
@@ -65,12 +72,11 @@ const updateMetricsById = async (userId, updateBody) => {
   metrics.surveyId.forEach((e) => {
     sAgree = sAgree + e.score5;
     total = total + 1;
-
   });
-  console.log("Aaaaaaaaa",sAgree,total);
+  console.log("Aaaaaaaaa", sAgree, total);
 
-  console.log("perc",Math.floor((sAgree / total)));
-  metrics.score = Math.floor((sAgree / total) );
+  console.log("perc", Math.floor(sAgree / total));
+  metrics.score = Math.floor(sAgree / total);
   Object.assign(metrics, updateBody);
   console.log("metrics", metrics, updateBody);
   await metrics.save();
