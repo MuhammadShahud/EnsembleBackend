@@ -4,8 +4,6 @@ const ApiError = require("../utils/APIError");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const companyService = require("../services/company.service");
-const s3 = require('../config/aws-config');
-
 // const teamService  = require("../services/team.service");
 
 const createUser = async (userBody) => {
@@ -21,31 +19,14 @@ const createUser = async (userBody) => {
 const postPic = async (userId, file) => {
   console.log("working", file);
   const user = await getUserById(userId);
-  const params = {
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: file.originalname,
-    Body: file.buffer,
-    ContentType: file.mimetype,
-    ACL: 'public-read'
+  const newUser = {
+    profilePic: file.path,
   };
-
-  s3.upload(params, (err, data) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: 'Error uploading file to S3' });
-    }
-
-    console.log("AWsData",data);
-    return res.status(200).json({ message: 'File uploaded successfully to S3' });
-  });
-  // const newUser = {
-  //   profilePic: file.path,
-  // };
-  // if (!user) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-  // }
-  // Object.assign(user, newUser);
-  // await user.save();
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+  Object.assign(user, newUser);
+  await user.save();
   return user;
 };
 
