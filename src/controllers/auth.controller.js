@@ -46,7 +46,7 @@ const signup = async (req, res, next) => {
   if (errors.length > 0) {
     return res.status(422).json({ errors: errors });
   }
-  User.findOne({ email: email })
+  User.findOne({ email: email , companyId:companyId })
     .then(async (user) => {
       if (user) {
         return res

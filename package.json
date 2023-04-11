@@ -1,7 +1,7 @@
 {
   "name": "onboard",
   "version": "1.0.0",
-  "description": "",
+  "description": "Employee onboarding backend",
   "main": "src/index.js",
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
