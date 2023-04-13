@@ -114,6 +114,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    noti: {
+      type: Boolean,
+      default: false,
+    },
     firstTimeSurvey: {
       type: Boolean,
       default: true,

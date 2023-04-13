@@ -1,4 +1,4 @@
-const { Notification, User } = require("../../models");
+const { Notification, Company, User } = require("../../models");
 const { Token } = require("../../models");
 const ApiError = require("../../utils/APIError");
 const httpStatus = require("http-status");
@@ -11,7 +11,7 @@ const getUserById = async (id) => {
   return User.findById(id);
 };
 
-const createGoalNoti = async (id, req, dueDate) => {
+const createGoalNoti = async (id, req, dueDate,companyId) => {
   const noti = await Notification.create(req);
   const user = await getUserById(id);
   console.log("asjidjasiodjas", user);
@@ -58,6 +58,19 @@ const createGoalNoti = async (id, req, dueDate) => {
       data: {
         type: req.navigate,
       },
+    }) .then(async (r) => {
+      const obj = {
+        noti: true,
+      };
+      const company = await Company.findById(companyId);
+      console.log("company", company.employeeId);
+
+      company.employeeId.forEach(async (e) => {
+        const user = await User.findById(e);
+        console.log("user", user);
+        Object.assign(user, obj);
+        await user.save();
+      });
     })
     console.log("setTimeout working", firebase);
   }, timeDifference);

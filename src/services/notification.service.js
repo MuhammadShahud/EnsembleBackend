@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-const { Notification } = require("../models");
+const { Notification, Company, User } = require("../models");
 const { Token } = require("../models");
 var mongoose = require("mongoose");
 const admin = require("firebase-admin");
@@ -13,23 +13,55 @@ const createNoti = async (id, req) => {
   const { title, text } = req;
   const body = text;
   const firebase = req.navigate
-    ? await admin.messaging().sendMulticast({
-        tokens,
-        notification: {
-          title,
-          body,
-        },
-        data: {
-          type: req.navigate,
-        },
-      })
-    : await admin.messaging().sendMulticast({
-        tokens,
-        notification: {
-          title,
-          body,
-        },
-      });
+    ? await admin
+        .messaging()
+        .sendMulticast({
+          tokens,
+          notification: {
+            title,
+            body,
+          },
+          data: {
+            type: req.navigate,
+          },
+        })
+        .then(async (r) => {
+          const obj = {
+            noti: true,
+          };
+          const company = await Company.findById(id);
+          console.log("company", company.employeeId);
+
+          company.employeeId.forEach(async (e) => {
+            const user = await User.findById(e);
+            console.log("user", user);
+            Object.assign(user, obj);
+            await user.save();
+          });
+        })
+    : await admin
+        .messaging()
+        .sendMulticast({
+          tokens,
+          notification: {
+            title,
+            body,
+          },
+        })
+        .then(async (r) => {
+          const obj = {
+            noti: true,
+          };
+          const company = await Company.findById(id);
+          console.log("company", company.employeeId);
+
+          company.employeeId.forEach(async (e) => {
+            const user = await User.findById(e);
+            console.log("user", user);
+            Object.assign(user, obj);
+            await user.save();
+          });
+        });
 
   return firebase;
 };
@@ -54,17 +86,10 @@ const getTokenById = async (id) => {
   return response;
 };
 
-
-
-
-
-
-
 module.exports = {
   createToken,
   getTokens,
   getTokenById,
   createNoti,
   getNoti,
-  
 };

@@ -5,6 +5,10 @@ const httpStatus = require("http-status");
 var mongoose = require("mongoose");
 const goalsService  = require("../services/goals.service")
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+const s3 = require('../config/aws-config');
+
+
 
 
 const createCompany = async (body) => {
@@ -36,18 +40,42 @@ const updateCompanyById = async (userId, updateBody) => {
 };
 
 const postPic = async (userId, file) => {
-  console.log("working",file);
-  const user = await getCompanyById(userId);
-  const newUser = {
-    profilePic: file.path
-  
+  try {
+    const user = await getCompanyById(userId);
+    console.log("file",file);
+
+    const fileStream = fs.createReadStream(file.path);
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Body: fileStream,
+      Key: file.filename,
+      ContentDisposition: `inline; filename="${file.originalname}"`
+    };
+
+    const data = await new Promise((resolve, reject) => {
+      s3.upload(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+
+    console.log("AWsData", data);
+    const newUser = {
+      profilePic: data.Key,
+    };
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    }
+    Object.assign(user, newUser);
+    await user.save();
+    return { user: user, message: 'File uploaded successfully to S3' };
+  } catch (err) {
+    console.log(err);
+    return { error: 'Error uploading file to S3' };
   }
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
-  Object.assign(user, newUser);
-  await user.save();
-  return user;
 };
 
 const changePassword = async (req, res) => {

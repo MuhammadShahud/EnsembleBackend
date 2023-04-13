@@ -16,7 +16,7 @@ const createGoal = async (body) => {
       companyId: body.companyId,
       type: "Goals",
     };
-    const response = await createGoalNoti(body.employeeId, noti, body.dueDate);
+    const response = await createGoalNoti(body.employeeId, noti, body.dueDate,body.companyId);
     console.log("firebaseee", response);
   }
   return goal;

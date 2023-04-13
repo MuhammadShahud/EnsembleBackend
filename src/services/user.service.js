@@ -1,9 +1,11 @@
 const httpStatus = require("http-status");
 const { User, Team } = require("../models");
 const ApiError = require("../utils/APIError");
-const path = require("path");
+const fs = require("fs");
 const bcrypt = require("bcrypt");
 const companyService = require("../services/company.service");
+const s3 = require('../config/aws-config');
+
 // const teamService  = require("../services/team.service");
 
 const createUser = async (userBody) => {
@@ -17,17 +19,54 @@ const createUser = async (userBody) => {
 };
 
 const postPic = async (userId, file) => {
-  console.log("working", file);
-  const user = await getUserById(userId);
-  const newUser = {
-    profilePic: file.path,
-  };
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  try {
+    const user = await getUserById(userId);
+
+    const fileStream = fs.createReadStream(file.path);
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Body: fileStream,
+      Key: file.filename,
+      ContentDisposition: `inline; filename="${file.originalname}"`
+    };
+
+    const data = await new Promise((resolve, reject) => {
+      s3.upload(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+
+    console.log("AWsData", data);
+    const newUser = {
+      profilePic: data.Key,
+    };
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    }
+    Object.assign(user, newUser);
+    await user.save();
+    return { user: user, message: 'File uploaded successfully to S3' };
+  } catch (err) {
+    console.log(err);
+    return { error: 'Error uploading file to S3' };
   }
-  Object.assign(user, newUser);
-  await user.save();
-  return user;
+};
+
+
+const getPic = async (key) => {
+  const downloadParams = {
+
+    Key: key,
+  
+    Bucket: process.env.AWS_BUCKET_NAME,
+  
+  };
+  
+  return s3.getObject(downloadParams).createReadStream();
 };
 
 const queryUsers = async (filter, options) => {
@@ -197,4 +236,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   changePassword,
+  getPic
 };

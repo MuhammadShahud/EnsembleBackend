@@ -14,6 +14,7 @@ router.route('/').post(
   userController.createUser,
 );
 // .get(userController.getAllUser);
+router.route('/uploads/:key').get(userController.getPic)
 router.route('/profilePic/:id').patch(upload.single('file'),userController.postPic)
 router.route('/changePass/:id').patch(userService.changePassword)
 router.route('/:id')

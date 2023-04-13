@@ -38,7 +38,7 @@ const createMetrics = async (body) => {
 
             array.push(s.id);
 
-            if (array.length===5) {
+            if (array.length === 5) {
               body.surveyId = array;
               console.log("detailll", i, r.results.length, array, body);
               metrics = await Metrics.create(body);

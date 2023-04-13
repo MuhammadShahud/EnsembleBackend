@@ -1,7 +1,6 @@
-const httpStatus = require('http-status');
-const { userService} = require('../services');
-const catchAsync = require('../utils/catchAsync');
-
+const httpStatus = require("http-status");
+const { userService } = require("../services");
+const catchAsync = require("../utils/catchAsync");
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -9,23 +8,26 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const changePassword = catchAsync(async (req, res) => {
-  const result = await userService.changePassword(req.body,req.params.id);
+  const result = await userService.changePassword(req.body, req.params.id);
   res.status(httpStatus.CREATED).send(result);
 });
 
 const postPic = catchAsync(async (req, res) => {
-  console.log('req.file',req.file);
-  const user = await userService.postPic(req.params.id,req.file);
+  console.log("req.file", req.file, req.params.id);
+  const user = await userService.postPic(req.params.id, req.file);
   res.status(httpStatus.CREATED).send(user);
 });
 
+const getPic = catchAsync(async (req, res) => {
+  console.log("req.file", req.params.key);
+  const user = await userService.getPic(req.params.key);
+  user.pipe(res);
+});
+
 const getUsers = catchAsync(async (req, res) => {
-  const filters = pick(req.query, ['front', 'premium','setId']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await userService.queryUsers(
-    filters,
-    options,
-  );
+  const filters = pick(req.query, ["front", "premium", "setId"]);
+  const options = pick(req.query, ["sortBy", "limit", "page"]);
+  const result = await userService.queryUsers(filters, options);
   res.status(httpStatus.CREATED).send(result);
 });
 
@@ -45,15 +47,12 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(result);
 });
 
-
-
-
-
 module.exports = {
   createUser,
   postPic,
   getUserById,
   updateUserById,
   changePassword,
-  deleteUser
+  deleteUser,
+  getPic,
 };
